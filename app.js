@@ -1,13 +1,19 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const { storeContact,loadContacts } = require('./utils/contact');
+const { 
+    storeContact,
+    loadContacts ,
+    updateContact,
+    detailContact,
+    destroyContact,
+
+} = require('./utils/contact');
 
 const host = 'localhost';
 const port = 5500;
 
 app.set('view engine','ejs');
-app.use(express.urlencoded());
 app.use(bodyParser.json());
 
 app
@@ -26,6 +32,34 @@ app
                 data,
             });
         })
+    })
+    .get('/contact/:id', (req,res) => {
+
+        detailContact(req.params.id,(head,data) => {
+            res.send({
+                head,
+                data,
+            });
+        });
+    })
+    .put('/contact/:id',(req,res) => {
+
+        updateContact(req.params.id,req.body,(head,data) => {
+
+            res.send({
+                head,
+                data,
+            });
+        });
+    })
+    .delete('/contact/:id', (req,res) => {
+
+        destroyContact(req.params.id,(head,data) => {
+            res.send({
+                head,
+                data,
+            });
+        });
     });  
 
 
